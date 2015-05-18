@@ -14,7 +14,6 @@ module Clook
 
     def configure
       yield(configuration) if block_given?
-      self
     end
 
     def load(type, *args, &block)
@@ -43,5 +42,6 @@ module Clook
     end
 
     Clook.configuration
+    Clook.load("env")
   end
 end
