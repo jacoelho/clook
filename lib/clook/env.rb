@@ -5,7 +5,7 @@ module Clook
       end
 
       def fetch value
-        ENV.fetch value
+        ENV[value.upcase]
       end
     end
   end

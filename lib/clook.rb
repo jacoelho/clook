@@ -1,30 +1,44 @@
 module Clook
-  require "clook/env"
-  require "clook/json"
+  require "clook/version"
+  require "clook/configuration"
 
   @adapters = Hash.new { |h, k| h[k] = [] }
-  @order = [:json, :env]
 
   class << self
+    attr_writer   :configuration
     attr_accessor :adapters
-    attr_accessor :order
+
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
+    def configure
+      yield(configuration) if block_given?
+    end
 
     def load(type, *args, &block)
+      require "clook/#{type.to_s}"
+
       @adapter = const_get("#{type.to_s.capitalize}")
       @adapter.send :initialize, *args, &block
       @adapters[type.to_sym] << @adapter
 
-    rescue NameError => e
-      raise "Unknown adapter #{e}"
-      raise
+      unless @configuration.order.include? type.to_sym
+        @configuration.order << type.to_sym
+      end
+
+    rescue LoadError
+      raise "Unknown adapter #{type}"
     end
 
     def fetch(stuff)
-      @order.each do |prio|
+      value = nil
+      @configuration.order.each do |prio|
         @adapters[prio].each do |adapter|
-          puts adapter.fetch(stuff)
+          value ||= adapter.fetch(stuff)
         end
       end
+      value
     end
   end
 end

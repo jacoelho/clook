@@ -1,6 +1,6 @@
 module Clook
-  class Json
-    require "json"
+  class Yaml
+    require "yaml"
 
     class << self
       def initialize path
@@ -9,7 +9,7 @@ module Clook
 
       def fetch value
         file = File.read(@path)
-        data = JSON.parse(file)
+        data = YAML::load(file)
         data[value]
       end
     end
