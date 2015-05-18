@@ -14,6 +14,7 @@ module Clook
 
     def configure
       yield(configuration) if block_given?
+      self
     end
 
     def load(type, *args, &block)
@@ -26,7 +27,7 @@ module Clook
       unless @configuration.order.include? type.to_sym
         @configuration.order << type.to_sym
       end
-
+      self
     rescue LoadError
       raise "Unknown adapter #{type}"
     end
@@ -40,5 +41,7 @@ module Clook
       end
       value
     end
+
+    Clook.configuration
   end
 end
