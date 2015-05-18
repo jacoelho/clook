@@ -41,6 +41,14 @@ module Clook
       value
     end
 
+    def method_missing(method_sym, *args, &block)
+      if method_sym.to_s =~ /^load_(\w+)$/
+        Clook.load($1, *args, &block)
+      else
+        super
+      end
+    end
+
     Clook.configuration
     Clook.load("env")
   end
