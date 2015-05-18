@@ -31,11 +31,11 @@ module Clook
       raise "Unknown adapter #{type}"
     end
 
-    def fetch(stuff)
+    def fetch(stuff, *args,  &block)
       value = nil
       @configuration.order.each do |prio|
         @adapters[prio].each do |adapter|
-          value ||= adapter.fetch(stuff)
+          value ||= adapter.fetch(stuff, *args, &block)
         end
       end
       value

@@ -19,7 +19,7 @@ module Clook
       def fetch(stuff)
         uri = URI.parse(@consul)
         http = Net::HTTP.new(uri.host, uri.port)
-        request = Net::HTTP::Get.new("/v1/kv/#{stuff}")
+        request = Net::HTTP::Get.new("/v1/kv/#{stuff}?recurse")
 
         DEFAULT_HEADERS.each do |key, value|
           request.add_field(key, value)
@@ -31,6 +31,7 @@ module Clook
           data = JSON.parse(response.body)
         end
 
+        puts data
         parse(data) unless data.nil?
       end
 
@@ -39,11 +40,15 @@ module Clook
           item = data.first["Value"]
           value = Base64.decode64(item) unless item.nil?
         else
-          value = data.map do |item|
-            { :name  => item["Name"],
-              :value => (Base64.decode64(item["Payload"]) unless item["Payload"].nil?)}
+          results = Array.new
+          data.map do |item|
+            if item["Value"]
+              value = Base64.decode64(item["Value"])
+              results << (item["Key"].split('/').reverse.reduce(value){ |r, e| {e.to_sym => r} })
             end
-         end
+          end
+          results.reduce Hash.new, :merge
+        end
       end
     end
   end
