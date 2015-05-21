@@ -5,7 +5,7 @@ Configurations made easy.
 Fetch configurations from several backends using a common interface.
 
 Backends supported:
-* ENV
+* environment
 * json
 * yaml
 * consul
