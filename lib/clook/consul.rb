@@ -4,6 +4,10 @@ require "uri"
 require "net/http"
 require "net/https"
 
+# TODO search services too?
+# /v1/catalog/service/<service>
+# v1/catalog/nodes
+
 module Clook
   class Consul
     class << self

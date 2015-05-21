@@ -1,8 +1,14 @@
 # Clook
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/clook`. To experiment with that code, run `bin/console` for an interactive prompt.
+Configurations made easy.
 
-TODO: Delete this and the text above, and describe your gem
+Fetch configurations from several backends using a common interface.
+
+Backends supported:
+* ENV
+* json
+* yaml
+* consul
 
 ## Installation
 
@@ -22,7 +28,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Load a backend:
+
+```ruby
+Clook.load_json(<filepath>)
+Clook.load_yaml(<filepath>)
+Clook.load_consul("https://<consul>:8500")
+
+Clook.fetch("hostname")
+```
+
+
+Change priority:
+
+```ruby
+Clook.configure do |config|
+  config.order = [:consul, :json, :env]
+end
+```
 
 ## Development
 

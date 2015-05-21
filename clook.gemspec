@@ -6,12 +6,12 @@ require 'clook/version'
 Gem::Specification.new do |spec|
   spec.name          = "clook"
   spec.version       = Clook::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
+  spec.authors       = ["José Coelho"]
+  spec.email         = ["jose.alberto.coelho@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Fetch configurations, made easy}
+  spec.description   = %q{Fetch configurations from several backends with a common interface}
+  spec.homepage      = "https://github.com/jacoelho/clook"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
