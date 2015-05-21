@@ -47,12 +47,29 @@ module Clook
           end
         end
 
-        values = merge(results)
+        values = squeeze_array(results)
         results.count == 1 ? find_value(values) : values
       end
 
       def merge(array)
         array.group_by(&:keys).map{ |k, v| { k.first => v.flat_map(&:values).reduce(&:merge) } }.reduce(&:merge)
+      end
+
+      def squeeze_array(ary)
+        ary
+        .group_by(&:keys)
+        .map do |k, v|
+          flatten_values = v.flat_map(&:values)
+
+          {}.tap do |h|
+            h[k.first] = if flatten_values[0].is_a?(Hash)
+                           squeze_array(flatten_values)
+                         else
+                           flatten_values[0]
+                         end
+          end
+        end
+        .reduce(&:merge)
       end
 
       def find_value(hash)
