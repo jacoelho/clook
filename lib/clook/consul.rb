@@ -31,24 +31,44 @@ module Clook
           data = JSON.parse(response.body)
         end
 
-        puts data
         parse(data) unless data.nil?
       end
 
       def parse(data)
-        if data.count == 1
-          item = data.first["Value"]
-          value = Base64.decode64(item) unless item.nil?
-        else
-          results = Array.new
-          data.map do |item|
-            if item["Value"]
-              value = Base64.decode64(item["Value"])
-              results << (item["Key"].split('/').reverse.reduce(value){ |r, e| {e.to_sym => r} })
-            end
+        results = Array.new
+        data.map do |item|
+          if item["Value"]
+            value = Base64.decode64(item["Value"])
+            results << (item["Key"].split('/').reverse.reduce(value){ |r, e| {e.to_sym => r} })
           end
-          results.reduce Hash.new, :merge
         end
+
+        values = merge(results)
+        results.count == 1 ? find_value(values) : values
+      end
+
+      def merge(array)
+        array.group_by(&:keys).map{ |k, v| { k.first => v.flat_map(&:values).reduce(&:merge) } }.reduce(&:merge)
+      end
+
+      def find_value(hash)
+        result = nil
+        hash.each do |key, value|
+          if hash[key].is_a? Hash
+            result = find_value(value)
+          else
+            result = value
+          end
+        end
+        result
+      end
+
+      def flat_hash(input)
+        Hash[*input.map { |key, value|
+          value.is_a?(Hash) ?
+            make_hash_one_dimensional(value).map { |nested_key, nested_value|  ["#{key}/#{nested_key}",nested_value] } :
+            [key, value]
+        }.flatten]
       end
     end
   end
