@@ -1,7 +1,6 @@
 require "spec_helper"
 
-describe Clook::Env do
-
+describe Clook do
   context "env" do
     before :each do
       allow(ENV).to receive(:[]).with("TEST").and_return("testing")
