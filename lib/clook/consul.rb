@@ -63,7 +63,7 @@ module Clook
 
           {}.tap do |h|
             h[k.first] = if flatten_values[0].is_a?(Hash)
-                           squeze_array(flatten_values)
+                           squeeze_array(flatten_values)
                          else
                            flatten_values[0]
                          end
