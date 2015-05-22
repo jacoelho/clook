@@ -1,0 +1,10 @@
+[
+    {
+        "CreateIndex": 522,
+        "ModifyIndex": 522,
+        "LockIndex": 0,
+        "Key": "foo/foo/foo",
+        "Flags": 0,
+        "Value": "YmFy"
+    }
+]

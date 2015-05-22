@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'webmock/test_unit'
 
 describe Clook do
   describe "configuration" do

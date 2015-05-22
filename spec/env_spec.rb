@@ -6,7 +6,7 @@ describe Clook do
       allow(ENV).to receive(:[]).with("TEST").and_return("testing")
     end
 
-    it "access variable" do
+    it "fetch a " do
       value = Clook.fetch("TEST")
       expect(value).to eq("testing")
     end
